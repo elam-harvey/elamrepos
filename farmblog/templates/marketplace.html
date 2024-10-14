@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}Marketplace{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <h1>Marketplace</h1>
+    {% if products %}
+        <form method="POST" enctype="multipart/form-data">
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-md-4">
+                        <div class="card product-card">
+                            <h4><img class="card-img-top" src="{{ url_for('static', filename='uploads/' ~ product.f_image) }}" alt="{{ product.name }}"></h4>
+                            <div class="card-body">
+                                <h4 class="card-title">{{ product.name }}</h4>
+                                <p class="card-text">{{ product.description }}</p>
+                                <p class="card-text"><strong>Quantity:</strong> {{ product.quantity }}</p>
+                                <p class="card-text"><strong>Price:</strong> Ksh {{ product.price }}</p>
+                                <a href="{{ url_for('product_details', product_id=product.id) }}" class="btn btn-primary">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </form>
+    {% else %}
+        <p>No products available at the moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

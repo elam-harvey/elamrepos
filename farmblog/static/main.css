@@ -1,0 +1,231 @@
+/* General styles */
+body {
+    background-color: #F4F4F4; /* Neutral background */
+    color: #070101; /* Dark text for readability */
+    font-size: large;
+    font-family: 'Roboto', sans-serif; /* Change to Roboto for body text */
+    background-image: url('{{ url_for("static", filename="images/cover2.jpg") }}'); /*  image path here */
+    background-size: cover; /* Cover the entire background */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent repeating the image */
+}
+
+.content-overlay {
+    position: relative;
+    z-index: 1; /* Place it above the background */
+}
+
+.content-overlay::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(245, 209, 209, 0.7); /* White with 70% opacity */
+    z-index: -1; /* Place it behind the content */
+}
+
+/* Navbar */
+.navbar {
+    background-color: #4CAF50; /* Primary Green */
+    color: #FFF;
+    padding: 10px 0;
+}
+
+/* Links and Buttons in Navbar */
+.navbar-brand, .nav-link {
+    color: #FFF;
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Hover effect for navbar links */
+.nav-link:hover {
+    color: #8BC34A; /* Secondary Green */
+}
+
+/* Buttons */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #8BC34A; /* Secondary Green */
+}
+
+/* Footer */
+footer {
+    background-color: #8B4513; /* Earthy brown for footer */
+    color: #FFF;
+    padding: 20px 0;
+    text-align: center;
+}
+
+/* Community Posts */
+.post-card {
+    border: 1px solid #4CAF50; /* Green border */
+    background-color: #FFF;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Product Cards */
+.product-card {
+    border: 1px solid #4CAF50;
+    margin-bottom: 20px;
+}
+
+.product-card .btn-primary {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.product-card .btn-primary:hover {
+    background-color: #8BC34A;
+    border-color: #8BC34A;
+}
+
+/* Hero Section */
+.hero {
+    background-image: url('path-to-agriculture-image.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto Slab', serif; /* Custom font for headings */
+    color: #098a0d; /* Green color for headings */
+}
+
+/* Example styling for specific heading levels */
+h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+h3 {
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+h4 {
+    font-size: 1.75em;
+    font-weight: 300;
+}
+
+/* Chat Button */
+.chat-button {
+    position: fixed;
+    bottom: 20px;      /* 20px from the bottom */
+    right: 20px;       /* 20px from the right */
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    padding: 15px 25px;
+    border-radius: 50px; /* Rounded button */
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for a floating effect */
+    transition: background-color 0.3s;
+}
+
+.chat-button:hover {
+    background-color: #8BC34A; /* Lighter green on hover */
+}
+
+.account-img {
+    height: 125px;
+    width: 125px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.article-img {
+    height: 65px;
+    width: 65px;
+    margin-right: 16px;
+}
+
+/* Flash messages container fixed to the top of the viewport */
+.flash-messages-container {
+    position: fixed;
+    top: 50;
+    left: 0;
+    width: 100%;
+    z-index: 9999; /* Ensures it stays on top of all other content */
+    pointer-events: none; /* Prevent interaction with content behind the messages */
+    padding: 10px;
+}
+
+.flash-messages {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.flash-messages .alert {
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    opacity: 0.9;
+    pointer-events: auto; /* Ensure the close button works */
+}
+
+/* Animation for fade-out */
+.flash-messages .fade-out {
+    animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.hidden{
+    display: none;
+}
+
+.site-header {
+    margin-bottom: 60px; /* Adjust as needed */
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px; 
+    object-fit: cover; /* Cover the container */
+}
+
+.product-image {
+    width: 300px; /* Set desired width */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.product-image {
+    max-width: 100%; /* Resize image to fit container */
+    height: auto;    /* Maintain aspect ratio */
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Agricultural Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <!-- Extend base template if you have a common layout -->
+    {% extends "layout.html" %}
+
+    {% block content %}
+    <div class="container mt-5 pt-5">
+    <header class="hero-section">
+        <div class="container">
+            <h1>Welcome to the Agricultural Platform</h1>
+            <p>Connect with other farmers, explore crop markets, and engage in community discussions.</p>
+            {% if not current_user.is_authenticated %}
+                <a href="{{ url_for('register') }}" class="button">Join Now</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <section class="features-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h2>Marketplace</h2>
+                        <p>Buy and sell fresh produce directly from farmers. Browse our marketplace and discover a variety of crops.</p>
+                        <a href="{{ url_for('market') }}" class="button">Visit Marketplace</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="col-md-12">
+                    <div class="feature-box">
+                        <h2>Community</h2>
+                        <p>Join discussions on farming techniques, crop management, and more. Connect with fellow farmers in our community section.</p>
+                        <a href="{{ url_for('community') }}" class="button">Join the Community</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="container">
+            <h2>About Our Platform</h2>
+            <p>Our mission is to empower farmers by providing them with the tools to connect, share knowledge, and trade crops. Whether you're a seasoned farmer or just starting, our platform offers a space for you to grow and thrive.</p>
+        </div>
+    </section>
+
+    {% endblock %}
+</body>
+</html>
