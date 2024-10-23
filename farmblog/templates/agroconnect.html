@@ -6,17 +6,20 @@
     <title>Agricultural Platform</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
-<body style='background-image: url("{{ url_for("static", filename="images/cover2.jpg") }}"); background-size: cover; background-position: center;' class="welcome-page">
+<body style="background-image: url('{{ url_for('static', filename='images/cover2.jpg') }}'); background-size: cover; background-position: center;" class="welcome-page">
     <div class="overlay"></div> <!-- Semi-transparent overlay -->
 
-    <div class="content-overlay">
+    <div class="content-overlay text-center">
         <nav class="welcome-nav">
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-            </ul>
-            <!-- Badge centered -->
-            <div class="badge">
-                <img src="{{ url_for('static', filename='images/badge.jpg') }}" alt="New Badge" />
+            <div class="badge mb-3">
+                <img src="{{ url_for('static', filename='images/badge2.jpg') }}" alt="New Badge" />
+            </div>
+            <div class="text-white d-flex justify-content-between mx-auto" style="width: 80%; max-width: 600px;">
+                <span class="d-block">Text on the left</span>
+                <span class="d-block">Text on the right</span>
+            </div>
+            <div>
+                <a class="button" href="{{ url_for('home')}}">Home</a>
             </div>
         </nav>
 
