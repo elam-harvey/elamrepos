@@ -89,24 +89,23 @@ def product_details(product_id):
 def add_product():
     form = ProductCreationForm() 
     if request.method == 'POST' and form.validate_on_submit():
+        filename = None  # Handle the case where no image is uploaded
         if form.f_image.data:
-            filename = save_picture(form.f_image.data)
+             filename = save_picture(form.f_image.data)   
         else:
-            filename = None  # Handle the case where no image is uploaded
-        upload_directory = 'farmblog/static/uploads'
-        filename = secure_filename(form.f_image.data.filename)
-        file_path = os.path.join(upload_directory, filename)
+            upload_directory = 'farmblog/static/uploads'
+            file_path = os.path.join(upload_directory, filename)
 
-        # Create the upload directory if it doesn't exist
-        if not os.path.exists(upload_directory):
-            os.makedirs(upload_directory)
+            # Create the upload directory if it doesn't exist
+            if not os.path.exists(upload_directory):
+                os.makedirs(upload_directory)
 
-        # Save the uploaded file
-        try:
-            form.f_image.data.save(file_path)
-            print(f"File saved at: {file_path}")  # Debug statement
-        except Exception as e:
-            print(f"Error saving file: {e}")
+            # Save the uploaded file
+            try:
+                form.f_image.data.save(file_path)
+                print(f"File saved at: {file_path}")  # Debug statement
+            except Exception as e:
+                print(f"Error saving file: {e}")
 
         #  product creation
         product = Products(

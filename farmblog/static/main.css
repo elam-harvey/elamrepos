@@ -9,10 +9,20 @@ body {
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Prevent repeating the image */
 }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 
 .content-overlay {
     position: relative;
     z-index: 1; /* Place it above the background */
+    animation: scaleUp 0.5s ease-in-out forwards;
 }
 
 .content-overlay::before {
@@ -24,6 +34,23 @@ body {
     bottom: 0;
     background-color: rgba(245, 209, 209, 0.7); /* White with 70% opacity */
     z-index: -1; /* Place it behind the content */
+    animation: scaleUp 0.5s ease-in-out forwards;
+}
+.scale-in {
+    opacity: 0;
+    transform: scale(0.9);  /* Start smaller */
+    animation: scaleUp 0.5s ease-in-out forwards; /* Scale in */
+}
+
+@keyframes scaleUp {
+    from {
+        opacity: 0;
+        transform: scale(0.9);  /* Start smaller */
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);    /* End at normal size */
+    }
 }
 
 /* Navbar */
@@ -31,6 +58,7 @@ body {
     background-color: #4CAF50; /* Primary Green */
     color: #FFF;
     padding: 10px 0;
+    animation: fadeIn 1s ease-in-out forwards;
 }
 
 /* Links and Buttons in Navbar */
@@ -76,6 +104,7 @@ footer {
     background-color: #FFF;
     padding: 20px;
     margin-bottom: 20px;
+    animation: scaleUp 0.8s ease-in-out forwards;
 }
 
 /* Product Cards */
@@ -229,3 +258,4 @@ h4 {
     max-width: 100%; /* Resize image to fit container */
     height: auto;    /* Maintain aspect ratio */
 }
+
