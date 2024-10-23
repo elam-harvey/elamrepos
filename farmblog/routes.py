@@ -12,6 +12,10 @@ from farmblog.forms import (RegistrationForm, LoginForm, UpdateAccountForm, Prod
 import os
 
 @app.route("/")
+@app.route("/agroconnect")
+def agroconnect():
+    return render_template('agroconnect.html',show_footer= True, title='Agroconnect')
+
 @app.route("/home")
 def home():
     return render_template('home.html',show_footer=True, title='Home')

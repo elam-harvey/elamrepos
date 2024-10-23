@@ -1,6 +1,5 @@
 /* General styles */
 body {
-    background-color: #F4F4F4; /* Neutral background */
     color: #070101; /* Dark text for readability */
     font-size: large;
     font-family: 'Roboto', sans-serif; /* Change to Roboto for body text */
@@ -32,10 +31,11 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(245, 209, 209, 0.7); /* White with 70% opacity */
+    background-color: rgba(199, 194, 194, 0.729); /* White with 70% opacity */
     z-index: -1; /* Place it behind the content */
     animation: scaleUp 0.5s ease-in-out forwards;
 }
+
 .scale-in {
     opacity: 0;
     transform: scale(0.9);  /* Start smaller */
@@ -53,6 +53,173 @@ body {
     }
 }
 
+/* Ensure only the welcome page is affected */
+.welcome-page {
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column; /* Stack the nav and content vertically */
+    background-image: url('{{ url_for("static", filename="images/cover2.jpg") }}'); /* Image path */
+    background-size: cover; /* Cover the background */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent image repetition */
+    margin: 0;
+    padding: 0;
+    left: 0; /* Ensure the navbar starts from the left edge */
+    animation: scaleUp 0.5s ease-in-out forwards;
+}
+
+/* Add an overlay behind the text but above the background image */
+.welcome-page .overlay {
+    position: relative;
+    top: 0;
+    left: 30px;
+    right: 30px;
+    bottom: 0;
+    background-color: rgba(199, 194, 194, 0.729); /* Semi-transparent black overlay */
+    z-index: 1; /* Ensure the overlay is above the background but behind content */
+}
+
+/* Hero section specific to welcome page */
+.welcome-page .hero-section {
+    margin-top: 220px;
+    padding: 20px;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex: 1; /* Take remaining space */
+    padding: 20px;
+    color: rgb(6, 6, 6); /* Ensure text is visible */
+}
+
+/* About section specific to welcome page */
+.welcome-page .about-section {
+    padding: 20px;
+    margin-top: 10px;
+    text-align: center;
+    color: rgb(16, 16, 16); /* Text visibility */
+}
+
+/* Button styling specific to welcome page */
+.welcome-page .button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.welcome-page .button:hover {
+    background-color: #24b543;
+}
+
+/* Welcome page specific navigation styling */
+.welcome-page .welcome-nav {
+    background-color: #28a745; /* Green color for nav */
+    padding: 80px 0;
+    color: #FFF;
+    animation: fadeIn 1s ease-in-out forwards;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    margin: 0;
+    height: 100px;
+}
+
+.welcome-page .welcome-nav ul {
+    list-style-type: none;
+    margin: 20px;
+    padding: 0;
+    text-align: left; /* Align the nav to the left */
+    padding-left: 0px; /* Add padding to the left */
+}
+
+.welcome-page .welcome-nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.welcome-page .welcome-nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #2ac54b;
+    border-radius: 5px;
+}
+
+.welcome-page .welcome-nav ul li a:hover {
+    background-color: #27bb51;
+}
+
+/* Add animations */
+@keyframes scaleUp {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.welcome-page .footer {
+    background-color: #8B4513; /* Earthy brown for footer */
+    color: #FFF;
+    padding: 20px 0;
+    text-align: center;
+}
+
+/* Badge styling */
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    position: absolute; /* Change to absolute */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for perfect centering */
+    height: 100px; /* Badge height */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.badge img {
+    height: 70px; /* Change this value to resize the badge */
+    width: 80px; /* Maintain aspect ratio */
+}
+
+@media (max-width: 768px) {
+    .badge img {
+        height: 30px; /* Smaller badge on smaller screens */
+        width: 30px;
+    }
+}
+
+@media (min-width: 769px) {
+    .badge img {
+        height: 80px; /* Default size for larger screens */
+        width: 80px;
+    }
+}
+
+/* Optional: Add a hover effect for the badge */
+.badge img:hover {
+    transform: scale(1.1); /* Slightly enlarge the badge on hover */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
 /* Navbar */
 .navbar {
     background-color: #4CAF50; /* Primary Green */
@@ -68,17 +235,46 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Navbar links default style */
+.navbar-nav a {
+    position : relative;
+    padding: 10px 20px;
+    text-decoration: none; /* Remove underline */
+    color: white; /* Default text color (light) */
+    transition: color 0.3s ease; /* Smooth transition */
+    z-index: 1;
+}
+
+/* Rectangle effect using ::before pseudo-element */
+.navbar-nav a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 0; /* Start with zero width */
+    height: 100%; /* Height of the rectangle */
+    bottom: 0; /* Position at the bottom of the link */
+    left: 0;
+    background-color: rgb(15, 111, 37); /* Rectangle color */
+    z-index: -1;
+    transition: width 0.3s ease; /* Smooth transition for width */
+    border-radius: 10px; /* Add rounded corners */
+}
+
 /* Hover effect for navbar links */
-.nav-link:hover {
-    color: #8BC34A; /* Secondary Green */
+.navbar-nav a:hover {
+    color: #0f1b12; /* Secondary blue */
+}
+
+.navbar-nav a:hover::before {
+    width: 100%; /* Expand the rectangle to full width */
 }
 
 /* Buttons */
 .button {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 5px 10px;
     margin: 5px;
-    background-color: #007bff;
+    background-color: #28a745;
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -97,6 +293,7 @@ footer {
     padding: 20px 0;
     text-align: center;
 }
+
 
 /* Community Posts */
 .post-card {
