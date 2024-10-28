@@ -13,14 +13,9 @@
         <nav class="welcome-nav">
             <div class="badge mb-3">
                 <img src="{{ url_for('static', filename='images/badge2.jpg') }}" alt="New Badge" />
+                <b>AgroConnect</b>
             </div>
-            <div class="text-white d-flex justify-content-between mx-auto" style="width: 80%; max-width: 600px;">
-                <span class="d-block">Text on the left</span>
-                <span class="d-block">Text on the right</span>
-            </div>
-            <div>
-                <a class="button" href="{{ url_for('home')}}">Home</a>
-            </div>
+            
         </nav>
 
         {% block content %}
@@ -32,6 +27,8 @@
                         {% if not current_user.is_authenticated %}
                             <a href="{{ url_for('register') }}" class="button">Join Now</a>
                             <a href="{{ url_for('login') }}" class="button">Login</a>
+                        {% else %}
+                            <a class="button" href="{{ url_for('home')}}">Home</a>
                         {% endif %}
                         <section class="about-section">
                             <h1>Our Mission</h1>

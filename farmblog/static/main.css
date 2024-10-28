@@ -113,7 +113,7 @@ body {
 }
 
 .welcome-page .button:hover {
-    background-color: #262f2829;
+    background-color: #0d0e0d;
 }
 
 /* Welcome page specific navigation styling */
@@ -196,8 +196,8 @@ body {
 }
 
 .badge img {
-    height: 100px; /* Change this value to resize the badge */
-    width: 120px; /* Maintain aspect ratio */
+    height: 60px; /* Change this value to resize the badge */
+    width: 80px; /* Maintain aspect ratio */
 }
 
 @media (max-width: 768px) {
@@ -209,8 +209,8 @@ body {
 
 @media (min-width: 769px) {
     .badge img {
-        height: 200px; /* Default size for larger screens */
-        width: 200px;
+        height: 150px; /* Default size for larger screens */
+        width: 150px;
     }
 }
 
@@ -340,7 +340,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Example styling for specific heading levels */
 h1 {
-    font-size: 2.5em;
+    font-size: 2.0em;
     font-weight: 700;
 }
 

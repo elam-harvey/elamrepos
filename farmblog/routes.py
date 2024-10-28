@@ -4,12 +4,13 @@ from farmblog import db, bcrypt
 from farmblog.utils import save_picture 
 from datetime import datetime
 from werkzeug.utils import secure_filename
-from farmblog.models import User, Post, Products
+from farmblog.models import User, Post, Products, PurchaseHistory
 from flask import current_app as app
 from farmblog.forms import (RegistrationForm, LoginForm, UpdateAccountForm, ProductEditForm,
                             RequestResetForm, ResetPasswordForm,
                             ProductCreationForm, NewPostForm)
 import os
+import re
 
 @app.route("/")
 @app.route("/agroconnect")
@@ -267,15 +268,23 @@ def buy(product_id):
     product = Products.query.get_or_404(product_id)
 
     # Check if the product is available in sufficient quantity
-    if product.quantity > 0:
+    # Extract the numeric part from product.quantity
+    quantity_str = product.quantity
+    numeric_quantity = int(re.search(r'\d+', quantity_str).group())
+         
+    numeric_quantity = request.form.get("quantity")
+    if numeric_quantity is None:
+        # Handle the case where quantity is not provided
+        flash("Please provide a quantity.")
+    elif numeric_quantity > 0:
         # Decrease the product quantity after purchase
-        product.quantity -= 1
+        numeric_quantity -= 1
         db.session.commit()
 
         # Optionally, add to the user's purchase history
         purchase = PurchaseHistory(
             user_id=current_user.id,
-            product_id=product_id,
+            product_id=product.id,
             date_purchased=datetime.utcnow()
         )
         db.session.add(purchase)
