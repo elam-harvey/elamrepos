@@ -1,6 +1,9 @@
 from PIL import Image
 import os
 import secrets
+from functools import wraps
+from flask import abort
+from flask_login import current_user
 from flask import current_app
 
 def save_picture(form_picture):
@@ -21,4 +24,13 @@ def save_picture(form_picture):
     img.save(picture_path)
 
     return picture_fn
-        
+
+def role_required(role):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if current_user.role != role:
+                abort(403)
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator    

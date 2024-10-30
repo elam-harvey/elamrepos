@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
 from farmblog import db, bcrypt
-from farmblog.utils import save_picture 
+from farmblog.utils import save_picture, role_required
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from farmblog.models import User, Post, Products, PurchaseHistory
@@ -28,7 +28,8 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        role = form.role.data
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password, role=role)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
@@ -91,6 +92,7 @@ def product_details(product_id):
 
 @app.route("/product/new", methods=['GET', 'POST'])
 @login_required
+@role_required("farmer")
 def add_product():
     form = ProductCreationForm() 
     if request.method == 'POST' and form.validate_on_submit():
@@ -133,6 +135,7 @@ def add_product():
 
 @app.route("/product/<int:product_id>/edit", methods=['GET', 'POST'])
 @login_required
+@role_required("farmer")
 def edit_product(product_id):
     product = Product.query.get_or_404(product_id)
     form = ProductEditForm(obj=product)  # Populate form with product details
@@ -208,6 +211,7 @@ def delete_post(post_id):
 
 @app.route("/product/<int:product_id>/update", methods=['GET', 'POST'])
 @login_required
+@role_required("farmer")
 def update_product(product_id):
     product = Products.query.get_or_404(product_id)
     
@@ -249,6 +253,7 @@ def update_product(product_id):
 
 @app.route("/product/<int:product_id>/delete", methods=['POST'])
 @login_required
+@role_required("farmer")
 def delete_product(product_id):
     product = Products.query.get_or_404(product_id)
 
@@ -261,39 +266,60 @@ def delete_product(product_id):
     flash('Your product has been deleted!', 'success')
     return redirect(url_for('market'))
 
-@app.route("/product/<int:product_id>/buy", methods=['GET','POST'])
+@app.route("/product/<int:product_id>/buy", methods=['GET', 'POST'])
 @login_required
 def buy(product_id):
-    # Fetch the product
     product = Products.query.get_or_404(product_id)
+    
+    # Check if the product's quantity is a string; convert if necessary
+    quantity_str = str(product.quantity)  # Ensure it's treated as a string
 
-    # Check if the product is available in sufficient quantity
-    # Extract the numeric part from product.quantity
-    quantity_str = product.quantity
-    numeric_quantity = int(re.search(r'\d+', quantity_str).group())
-         
-    numeric_quantity = request.form.get("quantity")
-    if numeric_quantity is None:
-        # Handle the case where quantity is not provided
-        flash("Please provide a quantity.")
-    elif numeric_quantity > 0:
-        # Decrease the product quantity after purchase
-        numeric_quantity -= 1
-        db.session.commit()
+    # Extract the unit from the quantity string
+    unit_match = re.search(r'[A-Za-z]+', quantity_str)  # Extract unit from string
+    unit = unit_match.group() if unit_match else ""
 
-        # Optionally, add to the user's purchase history
+    # Extract numeric part of quantity
+    numeric_match = re.search(r'\d+', quantity_str)
+    numeric_quantity = int(numeric_match.group()) if numeric_match else 0
+
+    # Get purchase quantity from form; default to 1 if not provided
+    purchase_quantity = int(request.form.get("quantity", 1))
+
+    if numeric_quantity >= purchase_quantity:
+        numeric_quantity -= purchase_quantity
+        product.quantity = f"{numeric_quantity} {unit}"  # Update quantity with unit
+
+        # Save the purchase to history
         purchase = PurchaseHistory(
             user_id=current_user.id,
             product_id=product.id,
+            quantity=purchase_quantity,
             date_purchased=datetime.utcnow()
         )
         db.session.add(purchase)
         db.session.commit()
 
-        flash(f"You have successfully bought {product.name}!", "success")
+        flash(f"You successfully bought {purchase_quantity} {unit} of {product.name}!", "success")
     else:
-        flash(f"{product.name} is out of stock!", "danger")
+        flash(f"{product.name} has insufficient stock!", "danger")
 
-    return redirect(url_for('market'))    
+    return redirect(url_for('product_details', product_id=product_id))
+
+@app.route('/search', methods=['GET'])
+@login_required
+def search():
+    query = request.args.get('query', '').strip()
+    if query:
+        products = Products.query.filter(Products.name.contains(f'%{query}%')).all()
+        posts = Post.query.filter(Post.title.contains(f'%{query}%')).all()
+        users = User.query.filter(User.username.contains(f'%{query}%')).all()
+    else:
+        products = []
+        posts = []
+        users = []
+
+
+    return render_template('search.html', products=products)
+
 
 
