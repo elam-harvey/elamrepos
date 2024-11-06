@@ -1,0 +1,313 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* Modern Navigation Bar */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 10px 20px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #f39c12;
+    color: white;
+    border-radius: 5px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #f39c12;
+    text-transform: uppercase;
+}
+
+.book-btn {
+    background-color: #f39c12;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.book-btn:hover {
+    background-color: #e67e22;
+}
+
+/* Hamburger Menu for Mobile */
+.hamburger {
+    display: none;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+}
+
+.hamburger div {
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.95);
+        justify-content: center;
+        align-items: center;
+        transition: left 0.3s ease;
+    }
+
+    nav ul.active {
+        left: 0;
+    }
+
+    nav ul li {
+        margin: 20px 0;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .book-btn {
+        background-color: #f39c12;
+        padding: 10px 20px;
+    }
+}
+
+/* Background Image Slideshow */
+.slideshow {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.slideshow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    animation: slideShow 12s infinite;
+}
+
+/* Define the animation for sliding images */
+@keyframes slideShow {
+    0% {
+        background-image: url('image1.jpg');
+    }
+    25% {
+        background-image: url('image2.jpg');
+    }
+    50% {
+        background-image: url('image3.jpg');
+    }
+    75% {
+        background-image: url('image4.jpg');
+    }
+    100% {
+        background-image: url('image1.jpg');
+    }
+}
+
+/* Overlay Text on Slideshow */
+.slideshow-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+.slideshow-content h1 {
+    font-size: 3rem;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.slideshow-content p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+.slideshow-content .book-btn {
+    background-color: #f39c12;
+    padding: 15px 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.slideshow-content .book-btn:hover {
+    background-color: #e67e22;
+}
+
+/* About Us Section */
+.about {
+    padding: 80px 20px;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.about p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Rooms Section */
+.rooms {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.rooms h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+.room-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.room {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.room img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.room h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.room p {
+    font-size: 1rem;
+    color: #666;
+}
+
+.room .price {
+    font-size: 1.5rem;
+    color: #f39c12;
+    margin-top: 15px;
+}
+
+/* Payment Section */
+.payment {
+    padding: 80px 20px;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.payment h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.payment p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+}
+
+.payment-options {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.payment-options img {
+    width: 100px;
+    height: auto;
+}
+
+/* Footer with Contact Links */
+footer {
+    background-color: #222;
+    padding: 20px 0;
+    text-align: center;
+    color: white;
+}
+
+footer .social-icons {
+    margin: 10px 0;
+}
+
+footer .social-icons a {
+    color: white;
+    font-size: 1.5rem;
+    margin: 0 15px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer .social-icons a:hover {
+    color: #f39c12;
+}
