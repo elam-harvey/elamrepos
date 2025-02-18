@@ -1,0 +1,33 @@
+{% extends layout.html %}
+{% block content %}
+<div class="container">
+    <h1>Available Rooms</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <ul>
+        {% for room in rooms %}
+            <li>
+                {{ room.name }} - ${{ room.price }} 
+                <form method="POST" action="{{ url_for('book', room_id=room.id) }}">
+                    <button type="submit">Book Now</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('add_room') }}">Add Room (Admin)</a>
+
+    <h3>Average Rating: {{ average_rating }}</h3>
+    <h4>User Reviews:</h4>
+    {% for rating in ratings %}
+        <p>{{ rating.user.username }} rated this room {{ rating.rating_value }} stars.</p>
+        <p>{{ rating.comment }}</p>
+    {% endfor %}
+</div>
+{% endblock %}
