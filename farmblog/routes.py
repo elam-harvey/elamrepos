@@ -1,22 +1,25 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
-from farmblog import db, bcrypt
+from farmblog import db, bcrypt, mail
+from flask_mail import Message
 from farmblog.utils import save_picture, role_required
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from farmblog.models import User, Post, Products, PurchaseHistory
 from flask import current_app as app
+from authlib.integrations.flask_client import OAuth
 from farmblog.forms import (RegistrationForm, LoginForm, UpdateAccountForm, ProductEditForm,
                             RequestResetForm, ResetPasswordForm,
                             ProductCreationForm, NewPostForm)
 import os
 import re
 
-@app.route("/")
+
 @app.route("/agroconnect")
 def agroconnect():
     return render_template('agroconnect.html',show_footer= True, title='Agroconnect')
-
+    
+@app.route("/")
 @app.route("/home")
 def home():
     return render_template('home.html',show_footer=True, title='Home')
@@ -51,6 +54,16 @@ def login():
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login',show_footer=False, form=form)
+
+''' @app.route('/google-login')
+def google_login():
+    return OAuth.google.authorize_redirect(redirect_url=url_for('googleCallback', _external=True))
+
+@app.route('/signin-google')
+def googleCallback():
+    token = oauth.google.authorize_access_token()
+    session['user'] = token
+    return redirect(url_for("home")) '''
 
 @app.route("/logout")
 def logout():
@@ -321,5 +334,46 @@ def search():
 
     return render_template('search.html', products=products)
 
+def send_reset_password(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                  sender='noreply@demo.com',
+                  recipients=[user.email])
+    msg.body = f'''Tap the link below to reset your password:
+{url_for('reset_password', token=token, _external=True)}
+
+Please ignore if this does not concern you
+'''
+
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_password(user)
+        flash('An email has bee sent with the reset instructions', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', title='Reset Password', form=form)
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('That token id is invalid or expired. Please try again')
+        return redirect(url_for('reset_password'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated! You are now able to log in', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', title='reset Password', form=form)
 
 

@@ -1,7 +1,9 @@
 from farmblog import db, login_manager
+from flask import current_app as app
 from flask_login import UserMixin
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from itsdangerous import URLSafeTimedSerializer as Serializer
 
 
 @login_manager.user_loader
@@ -32,7 +34,7 @@ class PurchaseHistory(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     date_purchased = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-
+ 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, nullable=False)
@@ -44,6 +46,21 @@ class User(db.Model, UserMixin):
     #relationships
     products = db.relationship('Products', backref='owner', lazy=True)
     posts = db.relationship('Post', backref='author', lazy=True)
+
+    # reset password token
+    def get_reset_token(self):
+        s = Serializer(app.config['SECRET_KEY'])
+        return s.dumps({'user_id': self.id}).encode('utf-8')
+
+    # verify the token validity
+    @staticmethod
+    def verify_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
